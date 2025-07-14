@@ -52,3 +52,7 @@ cargo run
 # 4. LLM 실행
 ollama run <model>
 ```
+
+## License
+
+MIT
