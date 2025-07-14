@@ -1,16 +1,16 @@
 # Seednote
 
-비동기적으로 아이디어를 발전시키는 AI 노트 앱
+An asynchronous AI note-taking app that helps your ideas grow.
 
-주제만 던지면, 로컬 LLM이 알아서 what, how, why를 작성해줍니다.
+Just drop a topic, and your local LLM will generate structured insights: what, how, and why.
 
 ## Features
 
-- 주제 입력만으로 아이디어를 why, how, what으로 구조화
+- Automatically expands ideas into structured why, how, and what formats
 
-- LLM은 로컬에서 실행됨 (Ollama 기반)
+- Runs entirely on your local machine (Ollama-based LLM)
 
-- Supabase를 통한 상태 관리 및 저장
+- Uses Supabase for state management and data storage
 
 ## Requirements
 
@@ -18,39 +18,40 @@
 
 - Rust + Cargo
 
-- Supabase 프로젝트
+- A Supabase project
 
-- Ollama 설치 및 모델 다운로드
+- Ollama installed with a model downloaded
 
 ## Folder Structure
 
 ```bash
 apps/
-  web/    # React(Vite)
-  worker/      # Rust LLM 백그라운드 처리기
+  web/     # React (Vite) frontend
+  worker/    # Rust-based background LLM processor
 supabase/
-  schema.sql   # DB 테이블 정의
+  schema.sql   # Database schema definition
 ```
 
 ## Setup
 
 ```bash
 # 1. Supabase
-# Supabase 콘솔에서 테이블을 만들거나, schema.sql 실행
+# Create the table via Supabase console or run schema.sql manually
 
 # 2. Frontend
-cd apps/frontend
-cp .env.example .env      # 환경변수 설정
+cd apps/web
+cp .env.example .env       # Set environment variables
 npm install
 npm run dev
 
 # 3. Worker
 cd apps/worker
-cp .env.example .env      # 환경변수 설정
+cp .env.example .env       # Set environment variables
 cargo run
 
-# 4. LLM 실행
+# 4. Start LLM
 ollama run <model>
+
 ```
 
 ## License
