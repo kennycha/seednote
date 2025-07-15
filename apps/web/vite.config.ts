@@ -6,6 +6,7 @@ import { VitePWA } from "vite-plugin-pwa";
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: "/seednote/",
   plugins: [
     react(),
     tailwindcss(),
@@ -22,8 +23,8 @@ export default defineConfig({
         background_color: "#ffffff",
         display: "standalone",
         orientation: "portrait",
-        scope: "/",
-        start_url: "/",
+        scope: "/seednote/",
+        start_url: "/seednote/",
         icons: [
           {
             src: "logo_small.jpg",
