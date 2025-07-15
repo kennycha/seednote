@@ -94,7 +94,7 @@ export default function HomePage() {
       <div className="mb-6 flex flex-col items-start justify-between gap-4 sm:mb-8 sm:flex-row sm:items-center">
         <div>
           <h1 className="flex items-center gap-2 text-2xl font-bold sm:text-3xl">
-            <img src="/logo.png" alt="SeedNote Logo" className="h-6 w-6 sm:h-8 sm:w-8" />
+            <img src="/seednote/logo.png" alt="SeedNote Logo" className="h-6 w-6 sm:h-8 sm:w-8" />
             SeedNote
           </h1>
           <p className="text-muted-foreground mt-1 text-sm sm:mt-2 sm:text-base">
@@ -207,7 +207,7 @@ export default function HomePage() {
           // 빈 상태
           <div className="col-span-full px-4 py-8 text-center sm:py-12">
             <img
-              src="/logo.png"
+              src="/seednote/logo.png"
               alt="SeedNote Logo"
               className="mx-auto mb-3 h-10 w-10 opacity-40 sm:mb-4 sm:h-12 sm:w-12"
             />

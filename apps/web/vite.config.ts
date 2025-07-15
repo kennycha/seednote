@@ -24,7 +24,7 @@ export default defineConfig({
         display: "standalone",
         orientation: "portrait",
         scope: "/seednote/",
-        start_url: "/seednote/",
+        start_url: "/seednote/#/",
         icons: [
           {
             src: "logo_small.jpg",

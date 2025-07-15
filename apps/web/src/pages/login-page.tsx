@@ -70,7 +70,7 @@ export default function LoginPage() {
         <Card className="shadow-xl">
           <CardHeader className="text-center">
             <div className="mb-4 flex justify-center">
-              <img src="/logo.png" alt="SeedNote Logo" className="h-12 w-12" />
+              <img src="/seednote/logo.png" alt="SeedNote Logo" className="h-12 w-12" />
             </div>
             <CardTitle className="text-xl font-bold sm:text-2xl">
               {mode === "login" ? "SeedNote 로그인" : "SeedNote 회원가입"}
