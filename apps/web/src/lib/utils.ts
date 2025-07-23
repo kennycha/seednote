@@ -25,5 +25,6 @@ export function convertRowSeedToSeed(row: RawSeed): Seed {
     sprouts,
     status: row.status,
     created_at: row.created_at,
+    is_hidden: row.is_hidden,
   };
 }

@@ -43,6 +43,7 @@ export const seedsApi = {
         context: seed.context || null,
         status: "pending",
         sprouts: null,
+        is_hidden: false,
       })
       .select()
       .single();
@@ -62,6 +63,19 @@ export const seedsApi = {
 
     if (error) throw error;
     return data;
+  },
+
+  // seed의 is_hidden 상태 토글
+  toggleHidden: async (id: string, currentHiddenState: boolean): Promise<Seed> => {
+    const { data, error } = await supabase
+      .from("seeds")
+      .update({ is_hidden: !currentHiddenState })
+      .eq("id", id)
+      .select<"*", RawSeed>("*")
+      .single();
+
+    if (error) throw error;
+    return convertRowSeedToSeed(data);
   },
 };
 

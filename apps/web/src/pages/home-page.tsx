@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
-import { Plus, Clock, CheckCircle, AlertCircle, LogOut } from "lucide-react";
+import { Plus, Clock, CheckCircle, AlertCircle, LogOut, Eye, EyeOff } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Switch } from "@/components/ui/switch";
 import { seedsApi } from "@/lib/supabase";
 import type { Seed, CreateSeedInput, Sprout } from "@/types";
 import { useAuth } from "@/contexts/auth-context";
@@ -18,18 +19,22 @@ export default function HomePage() {
   const [isAddingSeed, setIsAddingSeed] = useState(false);
   const [selectedSeed, setSelectedSeed] = useState<Seed | null>(null);
   const [newSeed, setNewSeed] = useState<CreateSeedInput>({ title: "", context: "" });
+  const [showHiddenSeeds, setShowHiddenSeeds] = useState(false);
   const queryClient = useQueryClient();
   const { signOut, user } = useAuth();
 
   // Seeds 조회 (더미 데이터 사용)
   const {
-    data: seeds = [],
+    data: allSeeds = [],
     isLoading,
     error,
   } = useQuery({
     queryKey: ["seeds"],
     queryFn: seedsApi.getAll,
   });
+
+  // 숨겨진 Seeds 표시 여부에 따른 필터링
+  const seeds = showHiddenSeeds ? allSeeds : allSeeds.filter((seed) => !seed.is_hidden);
 
   // 새 Seed 생성
   const createSeedMutation = useMutation({
@@ -38,6 +43,15 @@ export default function HomePage() {
       queryClient.invalidateQueries({ queryKey: ["seeds"] });
       setNewSeed({ title: "", context: "" });
       setIsAddingSeed(false);
+    },
+  });
+
+  // Seed 숨김 상태 토글
+  const toggleHiddenMutation = useMutation({
+    mutationFn: ({ id, currentHiddenState }: { id: string; currentHiddenState: boolean }) =>
+      seedsApi.toggleHidden(id, currentHiddenState),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["seeds"] });
     },
   });
 
@@ -94,8 +108,8 @@ export default function HomePage() {
       <div className="mb-6 flex flex-col items-start justify-between gap-4 sm:mb-8 sm:flex-row sm:items-center">
         <div>
           <h1 className="flex items-center gap-2 text-2xl font-bold sm:text-3xl">
-            <img src="/seednote/logo.png" alt="SeedNote Logo" className="h-6 w-6 sm:h-8 sm:w-8" />
-            SeedNote
+            <img src="/seednote/logo.png" alt="Seednote Logo" className="h-6 w-6 sm:h-8 sm:w-8" />
+            Seednote
           </h1>
           <p className="text-muted-foreground mt-1 text-sm sm:mt-2 sm:text-base">
             아이디어를 캡처하고 AI가 자동으로 확장해드립니다
@@ -187,6 +201,19 @@ export default function HomePage() {
         </motion.div>
       )}
 
+      {/* 숨겨진 Seeds 표시 토글 */}
+      <div className="mb-4 flex justify-end sm:mb-6">
+        <div className="flex items-center gap-2">
+          <Switch id="show-hidden" checked={showHiddenSeeds} onCheckedChange={setShowHiddenSeeds} />
+          <label
+            htmlFor="show-hidden"
+            className="text-muted-foreground hidden cursor-pointer text-sm sm:inline"
+          >
+            숨겨진 Seeds 표시
+          </label>
+        </div>
+      </div>
+
       {/* Seeds 목록 */}
       <div className="grid gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
         {isLoading ? (
@@ -208,7 +235,7 @@ export default function HomePage() {
           <div className="col-span-full px-4 py-8 text-center sm:py-12">
             <img
               src="/seednote/logo.png"
-              alt="SeedNote Logo"
+              alt="Seednote Logo"
               className="mx-auto mb-3 h-10 w-10 opacity-40 sm:mb-4 sm:h-12 sm:w-12"
             />
             <h3 className="mb-2 text-base font-medium text-gray-900 sm:text-lg">
@@ -231,16 +258,39 @@ export default function HomePage() {
               transition={{ duration: 0.3 }}
             >
               <Card
-                className="h-full cursor-pointer transition-shadow hover:shadow-md"
+                className={`h-full cursor-pointer transition-shadow hover:shadow-md ${
+                  seed.is_hidden ? "border-dashed opacity-60" : ""
+                }`}
                 onClick={() => setSelectedSeed(seed)}
               >
                 <CardHeader>
                   <div className="flex items-start justify-between">
                     <CardTitle className="line-clamp-2 text-lg">{seed.title}</CardTitle>
-                    <Badge variant="secondary" className={getStatusColor(seed.status)}>
-                      {getStatusIcon(seed.status)}
-                      <span className="ml-1 capitalize">{seed.status}</span>
-                    </Badge>
+                    <div className="flex items-center gap-2">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleHiddenMutation.mutate({
+                            id: seed.id,
+                            currentHiddenState: seed.is_hidden,
+                          });
+                        }}
+                        className="h-8 w-8 p-0"
+                        disabled={toggleHiddenMutation.isPending}
+                      >
+                        {seed.is_hidden ? (
+                          <EyeOff className="h-4 w-4" />
+                        ) : (
+                          <Eye className="h-4 w-4" />
+                        )}
+                      </Button>
+                      <Badge variant="secondary" className={getStatusColor(seed.status)}>
+                        {getStatusIcon(seed.status)}
+                        <span className="ml-1 capitalize">{seed.status}</span>
+                      </Badge>
+                    </div>
                   </div>
                   {seed.context && (
                     <CardDescription className="line-clamp-2">{seed.context}</CardDescription>

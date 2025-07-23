@@ -16,8 +16,8 @@ export default defineConfig({
         enabled: true,
       },
       manifest: {
-        name: "SeedNote",
-        short_name: "SeedNote",
+        name: "Seednote",
+        short_name: "Seednote",
         description: "Seed ideas, sprout insights",
         theme_color: "#ffffff",
         background_color: "#ffffff",
@@ -68,5 +68,17 @@ export default defineConfig({
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
+  },
+  optimizeDeps: {
+    include: [
+      "@radix-ui/react-switch",
+      "@radix-ui/react-dialog",
+      "@radix-ui/react-tabs",
+      "@radix-ui/react-label",
+      "@radix-ui/react-progress",
+      "@radix-ui/react-separator",
+      "@radix-ui/react-slot",
+    ],
+    force: true,
   },
 });

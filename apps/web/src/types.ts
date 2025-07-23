@@ -1,4 +1,4 @@
-// SeedNote 데이터 모델 타입 정의
+// Seednote 데이터 모델 타입 정의
 
 export type SeedStatus = "pending" | "processing" | "done" | "error";
 export type SproutType = "what" | "how" | "why";
@@ -14,6 +14,7 @@ export interface RawSeed {
   };
   status: SeedStatus;
   created_at: string;
+  is_hidden: boolean;
 }
 
 export interface SproutContent {
@@ -30,6 +31,7 @@ export interface Seed {
   sprouts: Sprout[] | null;
   status: SeedStatus;
   created_at: string;
+  is_hidden: boolean;
 }
 
 // SproutJSON v1.0 스키마

@@ -1,1 +1,1 @@
-# SeedNote Frontend
+# Seednote Frontend

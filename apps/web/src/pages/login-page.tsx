@@ -46,9 +46,9 @@ export default function LoginPage() {
         <Card className="shadow-xl">
           <CardHeader className="text-center">
             <div className="mb-4 flex justify-center">
-              <img src="/seednote/logo.png" alt="SeedNote Logo" className="h-12 w-12" />
+              <img src="/seednote/logo.png" alt="Seednote Logo" className="h-12 w-12" />
             </div>
-            <CardTitle className="text-xl font-bold sm:text-2xl">SeedNote 로그인</CardTitle>
+            <CardTitle className="text-xl font-bold sm:text-2xl">Seednote 로그인</CardTitle>
             <CardDescription className="text-sm sm:text-base">
               아이디어를 캡처하고 AI가 확장해드립니다
             </CardDescription>
