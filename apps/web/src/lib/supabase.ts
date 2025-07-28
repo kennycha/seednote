@@ -44,6 +44,7 @@ export const seedsApi = {
         status: "pending",
         sprouts: null,
         is_hidden: false,
+        is_pinned: false,
       })
       .select()
       .single();
@@ -70,6 +71,19 @@ export const seedsApi = {
     const { data, error } = await supabase
       .from("seeds")
       .update({ is_hidden: !currentHiddenState })
+      .eq("id", id)
+      .select<"*", RawSeed>("*")
+      .single();
+
+    if (error) throw error;
+    return convertRowSeedToSeed(data);
+  },
+
+  // seed의 is_pinned 상태 토글
+  togglePinned: async (id: string, currentPinnedState: boolean): Promise<Seed> => {
+    const { data, error } = await supabase
+      .from("seeds")
+      .update({ is_pinned: !currentPinnedState })
       .eq("id", id)
       .select<"*", RawSeed>("*")
       .single();

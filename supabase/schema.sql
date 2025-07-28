@@ -5,5 +5,6 @@ CREATE TABLE seeds (
   sprouts JSONB,
   status TEXT DEFAULT 'pending' CHECK (status IN ('pending', 'processing', 'done', 'error')),
   is_hidden BOOLEAN DEFAULT false,
+  is_pinned BOOLEAN DEFAULT false,
   created_at TIMESTAMPTZ DEFAULT NOW()
 );

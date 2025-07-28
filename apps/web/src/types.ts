@@ -15,6 +15,7 @@ export interface RawSeed {
   status: SeedStatus;
   created_at: string;
   is_hidden: boolean;
+  is_pinned: boolean;
 }
 
 export interface SproutContent {
@@ -32,6 +33,7 @@ export interface Seed {
   status: SeedStatus;
   created_at: string;
   is_hidden: boolean;
+  is_pinned: boolean;
 }
 
 // SproutJSON v1.0 스키마

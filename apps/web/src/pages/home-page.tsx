@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
-import { Plus, Clock, CheckCircle, AlertCircle, LogOut, Eye, EyeOff } from "lucide-react";
+import { Plus, Clock, CheckCircle, AlertCircle, LogOut, Eye, EyeOff, Pin } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -33,8 +33,15 @@ export default function HomePage() {
     queryFn: seedsApi.getAll,
   });
 
-  // 숨겨진 Seeds 표시 여부에 따른 필터링
-  const seeds = showHiddenSeeds ? allSeeds : allSeeds.filter((seed) => !seed.is_hidden);
+  // 숨겨진 Seeds 표시 여부에 따른 필터링 및 정렬
+  const filteredSeeds = showHiddenSeeds ? allSeeds : allSeeds.filter((seed) => !seed.is_hidden);
+  const seeds = filteredSeeds.sort((a, b) => {
+    // 핀된 항목을 우선 정렬
+    if (a.is_pinned && !b.is_pinned) return -1;
+    if (!a.is_pinned && b.is_pinned) return 1;
+    // 핀 상태가 같으면 생성일 기준으로 정렬
+    return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+  });
 
   // 새 Seed 생성
   const createSeedMutation = useMutation({
@@ -50,6 +57,15 @@ export default function HomePage() {
   const toggleHiddenMutation = useMutation({
     mutationFn: ({ id, currentHiddenState }: { id: string; currentHiddenState: boolean }) =>
       seedsApi.toggleHidden(id, currentHiddenState),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["seeds"] });
+    },
+  });
+
+  // Seed 핀 상태 토글
+  const togglePinnedMutation = useMutation({
+    mutationFn: ({ id, currentPinnedState }: { id: string; currentPinnedState: boolean }) =>
+      seedsApi.togglePinned(id, currentPinnedState),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["seeds"] });
     },
@@ -260,32 +276,49 @@ export default function HomePage() {
               <Card
                 className={`h-full cursor-pointer transition-shadow hover:shadow-md ${
                   seed.is_hidden ? "border-dashed opacity-60" : ""
-                }`}
+                } ${seed.is_pinned ? "bg-blue-50/30 ring-2 ring-blue-200" : ""}`}
                 onClick={() => setSelectedSeed(seed)}
               >
                 <CardHeader>
                   <div className="flex items-start justify-between">
-                    <CardTitle className="line-clamp-2 text-lg">{seed.title}</CardTitle>
-                    <div className="flex items-center gap-2">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          toggleHiddenMutation.mutate({
-                            id: seed.id,
-                            currentHiddenState: seed.is_hidden,
-                          });
-                        }}
-                        className="h-8 w-8 p-0"
-                        disabled={toggleHiddenMutation.isPending}
-                      >
-                        {seed.is_hidden ? (
-                          <EyeOff className="h-4 w-4" />
-                        ) : (
-                          <Eye className="h-4 w-4" />
-                        )}
-                      </Button>
+                    <CardTitle className="line-clamp-2 pr-1 text-lg">{seed.title}</CardTitle>
+                    <div className="flex translate-y-[-4px] flex-col items-end gap-0.5">
+                      <div className="flex items-center gap-0">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            toggleHiddenMutation.mutate({
+                              id: seed.id,
+                              currentHiddenState: seed.is_hidden,
+                            });
+                          }}
+                          className="h-8 w-8 p-0"
+                          disabled={toggleHiddenMutation.isPending}
+                        >
+                          {seed.is_hidden ? (
+                            <EyeOff className="h-4 w-4" />
+                          ) : (
+                            <Eye className="h-4 w-4" />
+                          )}
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            togglePinnedMutation.mutate({
+                              id: seed.id,
+                              currentPinnedState: seed.is_pinned,
+                            });
+                          }}
+                          className={`h-8 w-8 p-0 ${seed.is_pinned ? "text-blue-600" : "text-gray-400"}`}
+                          disabled={togglePinnedMutation.isPending}
+                        >
+                          <Pin className="h-4 w-4" />
+                        </Button>
+                      </div>
                       <Badge variant="secondary" className={getStatusColor(seed.status)}>
                         {getStatusIcon(seed.status)}
                         <span className="ml-1 capitalize">{seed.status}</span>
