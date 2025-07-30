@@ -6,20 +6,60 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+// 안전한 배열 파싱 헬퍼
+export function safeArray(value: unknown): string[] {
+  if (Array.isArray(value)) return value.map(String);
+  if (typeof value === "string") return value.split(",").map((s) => s.trim());
+  return [];
+}
+
+// 안전한 기술스택 파싱 헬퍼
+export function safeTechnologies(value: unknown): {
+  frontend?: string[];
+  backend?: string[];
+  database?: string[];
+  infrastructure?: string[];
+} {
+  if (!value) return {};
+
+  // 새 형식 (객체)
+  if (typeof value === "object" && !Array.isArray(value)) {
+    const tech = value as {
+      frontend?: unknown[];
+      backend?: unknown[];
+      database?: unknown[];
+      infrastructure?: unknown[];
+    };
+    return {
+      frontend: safeArray(tech.frontend),
+      backend: safeArray(tech.backend),
+      database: safeArray(tech.database),
+      infrastructure: safeArray(tech.infrastructure),
+    };
+  }
+
+  // 기존 형식 (배열)
+  if (Array.isArray(value)) {
+    return { frontend: value };
+  }
+
+  return {};
+}
+
 export function convertRowSeedToSeed(row: RawSeed): Seed {
   const sprouts: Sprout[] = (["stack1", "stack2", "stack3"] as const).map((type) => ({
     seed_id: row.id,
     sprout_type: type,
-    content: row.sprouts?.[type] ?? { 
-      stack_name: "", 
-      description: "", 
+    content: row.sprouts?.[type] ?? {
+      stack_name: "",
+      description: "",
       technologies: {},
       pros: [],
       cons: [],
       learning_curve: "Medium" as const,
       estimated_dev_time: "",
       best_for: [],
-      example_projects: []
+      example_projects: [],
     },
     meta: {
       created_at: row.created_at,

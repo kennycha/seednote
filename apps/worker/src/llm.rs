@@ -87,10 +87,11 @@ Respond in this exact JSON format:
     let body = json!({
         "model": model,
         "messages": [
-            {"role": "system", "content": "You output ONLY valid JSON. No explanation."},
+            {"role": "system", "content": "You are a JSON generator. You MUST follow the exact schema provided. Output ONLY valid JSON with no explanation, comments, or additional text. Every field must be exactly as specified: arrays must be arrays, objects must be objects, strings must be strings. Do not deviate from the structure."},
             {"role": "user", "content": prompt}
         ],
-        "stream": false
+        "stream": false,
+        "temperature": 0.3
     });
 
     let res: Value = client
