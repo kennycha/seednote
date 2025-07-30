@@ -28,7 +28,7 @@ Provide 3 different detailed technology stack recommendations. Each should inclu
 - Learning difficulty assessment
 - Development time estimates
 - Best use cases
-- Example projects
+- Example projects (MUST be related to the input project idea, not generic examples)
 
 Respond in this exact JSON format:
 {{
@@ -46,7 +46,7 @@ Respond in this exact JSON format:
         "learning_curve": "Medium",
         "estimated_dev_time": "2-3주 (MVP), 2-3개월 (완성품)",
         "best_for": ["웹 애플리케이션", "프로토타입", "스타트업"],
-        "example_projects": ["대시보드", "CRM 시스템", "콘텐츠 관리"]
+        "example_projects": ["사용자 아이디어와 유사한 프로젝트", "해당 스택으로 가능한 관련 서비스", "확장 가능한 비슷한 앱"]
     }},
     "stack2": {{
         "stack_name": "Rust High-Performance",
@@ -62,7 +62,7 @@ Respond in this exact JSON format:
         "learning_curve": "Hard",
         "estimated_dev_time": "1-2개월 (MVP), 4-6개월 (완성품)",
         "best_for": ["고성능 시스템", "마이크로서비스", "시스템 프로그래밍"],
-        "example_projects": ["API 서버", "실시간 데이터 처리", "게임 백엔드"]
+        "example_projects": ["입력된 아이디어의 고성능 버전", "유사한 실시간 처리 서비스", "관련 시스템 소프트웨어"]
     }},
     "stack3": {{
         "stack_name": "Python Rapid Development",
@@ -78,7 +78,7 @@ Respond in this exact JSON format:
         "learning_curve": "Easy",
         "estimated_dev_time": "1-2주 (MVP), 1-2개월 (완성품)",
         "best_for": ["프로토타입", "데이터 분석", "AI/ML 통합"],
-        "example_projects": ["데이터 대시보드", "추천 시스템", "자동화 도구"]
+        "example_projects": ["입력 아이디어의 프로토타입", "관련 데이터 분석 도구", "유사한 자동화 서비스"]
     }}
 }}
 "#
