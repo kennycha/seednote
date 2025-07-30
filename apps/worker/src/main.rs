@@ -68,7 +68,7 @@ async fn main() -> Result<()> {
                 }
             }
             None => {
-                sleep(Duration::from_secs(60 * 30)).await;
+                sleep(Duration::from_secs(60 * 60)).await;
             }
         }
     }
