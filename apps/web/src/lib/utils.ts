@@ -53,13 +53,10 @@ export function convertRowSeedToSeed(row: RawSeed): Seed {
     content: row.sprouts?.[type] ?? {
       stack_name: "",
       description: "",
-      technologies: {},
+      technologies: [],
       pros: [],
       cons: [],
       learning_curve: "Medium" as const,
-      estimated_dev_time: "",
-      best_for: [],
-      example_projects: [],
     },
     meta: {
       created_at: row.created_at,

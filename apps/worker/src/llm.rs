@@ -11,74 +11,44 @@ pub async fn generate_sprouts(
 ) -> anyhow::Result<Value> {
     let prompt = format!(
         r#"
-You are a technical advisor that provides detailed technology stack recommendations for project ideas.
+You are a technical advisor that recommends 3 different technology stacks for a given project idea.
 
 PRIORITY ORDER:
-1. First recommend the most popular/mainstream stacks for the project type
-2. Then try TypeScript-based stacks (React/Next.js, Node.js, etc.)
-3. Finally try Rust or Python-based stacks (Axum, FastAPI, etc.)
+1. Most popular/mainstream stack for this project type
+2. TypeScript-based alternative
+3. Python or Rust alternative
 
 Input project idea:
 - Title: {title}
 - Context: {context:?}
 
-Provide 3 different detailed technology stack recommendations. Each should include:
-- Categorized technologies (frontend, backend, database, infrastructure)
-- Specific pros and cons
-- Learning difficulty assessment
-- Development time estimates
-- Best use cases
-- Example projects (MUST be related to the input project idea, not generic examples)
+Analyze the project and provide 3 different practical technology stack recommendations.
 
 Respond in this exact JSON format:
 {{
     "stack1": {{
-        "stack_name": "TypeScript Full-Stack",
-        "description": "Modern web development with React and Node.js ecosystem",
-        "technologies": {{
-            "frontend": ["React", "TypeScript", "Tailwind CSS"],
-            "backend": ["Node.js", "Express", "TypeScript"],
-            "database": ["PostgreSQL", "Redis"],
-            "infrastructure": ["Vercel", "Docker"]
-        }},
-        "pros": ["Fast development", "Strong typing", "Large community", "Good tooling"],
-        "cons": ["Runtime overhead", "Complex build setup"],
-        "learning_curve": "Medium",
-        "estimated_dev_time": "2-3주 (MVP), 2-3개월 (완성품)",
-        "best_for": ["웹 애플리케이션", "프로토타입", "스타트업"],
-        "example_projects": ["사용자 아이디어와 유사한 프로젝트", "해당 스택으로 가능한 관련 서비스", "확장 가능한 비슷한 앱"]
+        "stack_name": "...",
+        "description": "...",
+        "technologies": ["...", "...", "..."],
+        "pros": ["...", "...", "..."],
+        "cons": ["...", "...", "..."],
+        "learning_curve": "Easy|Medium|Hard"
     }},
     "stack2": {{
-        "stack_name": "Rust High-Performance",
-        "description": "High-performance backend with modern Rust ecosystem",
-        "technologies": {{
-            "frontend": ["React", "TypeScript"],
-            "backend": ["Rust", "Axum", "Tokio"],
-            "database": ["PostgreSQL", "Redis"],
-            "infrastructure": ["Docker", "AWS"]
-        }},
-        "pros": ["Excellent performance", "Memory safety", "Concurrent by design"],
-        "cons": ["Steep learning curve", "Longer development time", "Smaller ecosystem"],
-        "learning_curve": "Hard",
-        "estimated_dev_time": "1-2개월 (MVP), 4-6개월 (완성품)",
-        "best_for": ["고성능 시스템", "마이크로서비스", "시스템 프로그래밍"],
-        "example_projects": ["입력된 아이디어의 고성능 버전", "유사한 실시간 처리 서비스", "관련 시스템 소프트웨어"]
+        "stack_name": "...",
+        "description": "...",
+        "technologies": ["...", "...", "..."],
+        "pros": ["...", "...", "..."],
+        "cons": ["...", "...", "..."],
+        "learning_curve": "Easy|Medium|Hard"
     }},
     "stack3": {{
-        "stack_name": "Python Rapid Development",
-        "description": "Rapid development with Python's rich ecosystem",
-        "technologies": {{
-            "frontend": ["React", "TypeScript"],
-            "backend": ["Python", "FastAPI", "SQLAlchemy"],
-            "database": ["PostgreSQL", "Redis"],
-            "infrastructure": ["Docker", "Heroku"]
-        }},
-        "pros": ["Rapid prototyping", "Rich libraries", "Easy to learn", "Great for AI/ML"],
-        "cons": ["Performance limitations", "Global Interpreter Lock"],
-        "learning_curve": "Easy",
-        "estimated_dev_time": "1-2주 (MVP), 1-2개월 (완성품)",
-        "best_for": ["프로토타입", "데이터 분석", "AI/ML 통합"],
-        "example_projects": ["입력 아이디어의 프로토타입", "관련 데이터 분석 도구", "유사한 자동화 서비스"]
+        "stack_name": "...",
+        "description": "...",
+        "technologies": ["...", "...", "..."],
+        "pros": ["...", "...", "..."],
+        "cons": ["...", "...", "..."],
+        "learning_curve": "Easy|Medium|Hard"
     }}
 }}
 "#

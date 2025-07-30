@@ -21,18 +21,10 @@ export interface RawSeed {
 export interface SproutContent {
   stack_name: string;
   description: string;
-  technologies: {
-    frontend?: string[];
-    backend?: string[];
-    database?: string[];
-    infrastructure?: string[];
-  };
+  technologies: string[];
   pros: string[];
   cons: string[];
   learning_curve: "Easy" | "Medium" | "Hard";
-  estimated_dev_time: string;
-  best_for: string[];
-  example_projects: string[];
 }
 
 // seeds 테이블 구조
@@ -54,18 +46,10 @@ export interface Sprout {
   content: {
     stack_name: string;
     description: string;
-    technologies: {
-      frontend?: string[];
-      backend?: string[];
-      database?: string[];
-      infrastructure?: string[];
-    };
+    technologies: string[];
     pros: string[];
     cons: string[];
     learning_curve: "Easy" | "Medium" | "Hard";
-    estimated_dev_time: string;
-    best_for: string[];
-    example_projects: string[];
   };
   meta: {
     created_at: string;
