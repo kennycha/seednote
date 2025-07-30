@@ -2,11 +2,11 @@
 
 An asynchronous AI note-taking app that helps your ideas grow.
 
-Just drop a topic, and your local LLM will generate structured insights: what, how, and why.
+Just drop a project idea, and your local LLM will recommend 3 different technology stack combinations.
 
 ## Features
 
-- Automatically expands ideas into structured why, how, and what formats
+- Automatically recommends 3 different technology stack combinations for your project ideas
 
 - Runs entirely on your local machine (Ollama-based LLM)
 

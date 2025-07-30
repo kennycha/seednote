@@ -11,18 +11,18 @@ pub async fn generate_sprouts(
 ) -> anyhow::Result<Value> {
     let prompt = format!(
         r#"
-You are an assistant that expands ideas into structured JSON with 3 parts.
-Don't use empty string.
+You are a technical advisor that recommends 3 different technology stack combinations for a given project idea.
+Provide practical, modern technology stacks that would work well for the project.
 
-Input idea:
+Input project idea:
 - Title: {title}
 - Context: {context:?}
 
 Respond in this format:
 {{
-    "what": {{ "summary": "...", "core_value": "...", "examples": ["...", "..."] }},
-    "how": {{ "summary": "...", "core_value": "...", "examples": ["...", "..."] }},
-    "why": {{ "summary": "...", "core_value": "...", "examples": ["...", "..."] }}
+    "stack1": {{ "stack_name": "Full-Stack JavaScript", "description": "Modern web development with React and Node.js", "technologies": ["React", "Node.js", "PostgreSQL", "Tailwind CSS"] }},
+    "stack2": {{ "stack_name": "Python Data Stack", "description": "Data-driven application with Django", "technologies": ["Django", "Python", "PostgreSQL", "Redis"] }},
+    "stack3": {{ "stack_name": "Go Microservices", "description": "Scalable backend services", "technologies": ["Go", "Docker", "Kubernetes", "MongoDB"] }}
 }}
 "#
     );

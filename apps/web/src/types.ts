@@ -1,16 +1,16 @@
 // Seednote 데이터 모델 타입 정의
 
 export type SeedStatus = "pending" | "processing" | "done" | "error";
-export type SproutType = "what" | "how" | "why";
+export type SproutType = "stack1" | "stack2" | "stack3";
 
 export interface RawSeed {
   id: string;
   title: string;
   context: string;
   sprouts: {
-    how: SproutContent | null;
-    why: SproutContent | null;
-    what: SproutContent | null;
+    stack1: SproutContent | null;
+    stack2: SproutContent | null;
+    stack3: SproutContent | null;
   };
   status: SeedStatus;
   created_at: string;
@@ -19,9 +19,9 @@ export interface RawSeed {
 }
 
 export interface SproutContent {
-  summary: string;
-  core_value: string;
-  examples: string[];
+  stack_name: string;
+  description: string;
+  technologies: string[];
 }
 
 // seeds 테이블 구조
@@ -41,9 +41,9 @@ export interface Sprout {
   seed_id: string;
   sprout_type: SproutType;
   content: {
-    summary: string;
-    core_value: string;
-    examples: string[];
+    stack_name: string;
+    description: string;
+    technologies: string[];
   };
   meta: {
     created_at: string;

@@ -7,10 +7,10 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function convertRowSeedToSeed(row: RawSeed): Seed {
-  const sprouts: Sprout[] = (["what", "how", "why"] as const).map((type) => ({
+  const sprouts: Sprout[] = (["stack1", "stack2", "stack3"] as const).map((type) => ({
     seed_id: row.id,
     sprout_type: type,
-    content: row.sprouts?.[type] ?? { summary: "", core_value: "", examples: [] },
+    content: row.sprouts?.[type] ?? { stack_name: "", description: "", technologies: [] },
     meta: {
       created_at: row.created_at,
       agent: "ollama:llama3:8b", // 또는 실제 모델명

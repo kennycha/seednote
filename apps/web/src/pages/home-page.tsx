@@ -11,7 +11,7 @@ import { Progress } from "@/components/ui/progress";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Switch } from "@/components/ui/switch";
 import { seedsApi } from "@/lib/supabase";
-import type { Seed, CreateSeedInput, Sprout } from "@/types";
+import type { Seed, CreateSeedInput } from "@/types";
 import { useAuth } from "@/contexts/auth-context";
 import SeedDetailDialog from "@/components/seed-detail-dialog";
 
@@ -165,7 +165,7 @@ export default function HomePage() {
             <CardHeader>
               <CardTitle>새 아이디어 추가</CardTitle>
               <CardDescription>
-                짧은 아이디어를 입력하면 AI가 자동으로 WHAT, HOW, WHY로 확장합니다
+                짧은 아이디어를 입력하면 AI가 3가지 기술스택 조합을 추천합니다
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -342,9 +342,9 @@ export default function HomePage() {
                     <div className="space-y-2">
                       <p className="text-sm font-medium">Sprouts:</p>
                       <div className="flex gap-1">
-                        {seed.sprouts.map((sprout: Sprout, index: number) => (
+                        {seed.sprouts.map((_, index: number) => (
                           <Badge key={index} variant="outline" className="text-xs">
-                            {sprout.sprout_type.toUpperCase()}
+                            {`스택${index + 1}`}
                           </Badge>
                         ))}
                       </div>

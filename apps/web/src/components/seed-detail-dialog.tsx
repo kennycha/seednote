@@ -6,9 +6,9 @@ import {
   CheckCircle,
   AlertCircle,
   Lightbulb,
-  Target,
-  Cog,
-  HelpCircle,
+  Code,
+  Layers,
+  Zap,
 } from "lucide-react";
 import {
   Dialog,
@@ -66,12 +66,12 @@ export default function SeedDetailDialog({ seed, open, onOpenChange }: SeedDetai
 
   const getSproutIcon = (type: string) => {
     switch (type) {
-      case "what":
-        return <Target className="h-5 w-5 text-green-500" />;
-      case "how":
-        return <Cog className="h-5 w-5 text-blue-500" />;
-      case "why":
-        return <HelpCircle className="h-5 w-5 text-purple-500" />;
+      case "stack1":
+        return <Code className="h-5 w-5 text-green-500" />;
+      case "stack2":
+        return <Layers className="h-5 w-5 text-blue-500" />;
+      case "stack3":
+        return <Zap className="h-5 w-5 text-purple-500" />;
       default:
         return <Lightbulb className="h-5 w-5" />;
     }
@@ -79,11 +79,11 @@ export default function SeedDetailDialog({ seed, open, onOpenChange }: SeedDetai
 
   const getSproutColor = (type: string) => {
     switch (type) {
-      case "what":
+      case "stack1":
         return "border-green-200 bg-green-50";
-      case "how":
+      case "stack2":
         return "border-blue-200 bg-blue-50";
-      case "why":
+      case "stack3":
         return "border-purple-200 bg-purple-50";
       default:
         return "border-gray-200 bg-gray-50";
@@ -143,7 +143,9 @@ export default function SeedDetailDialog({ seed, open, onOpenChange }: SeedDetai
                   <div className="flex items-center gap-3">
                     <Clock className="h-5 w-5 animate-spin text-blue-500" />
                     <div>
-                      <p className="font-medium text-blue-900">AI가 아이디어를 확장하고 있습니다</p>
+                      <p className="font-medium text-blue-900">
+                        AI가 기술스택 조합을 추천하고 있습니다
+                      </p>
                       <p className="text-sm text-blue-700">잠시만 기다려주세요...</p>
                     </div>
                   </div>
@@ -176,9 +178,9 @@ export default function SeedDetailDialog({ seed, open, onOpenChange }: SeedDetai
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
               <TabsList className="grid w-full grid-cols-4">
                 <TabsTrigger value="overview">개요</TabsTrigger>
-                <TabsTrigger value="what">WHAT</TabsTrigger>
-                <TabsTrigger value="how">HOW</TabsTrigger>
-                <TabsTrigger value="why">WHY</TabsTrigger>
+                <TabsTrigger value="stack1">스택 1</TabsTrigger>
+                <TabsTrigger value="stack2">스택 2</TabsTrigger>
+                <TabsTrigger value="stack3">스택 3</TabsTrigger>
               </TabsList>
 
               <TabsContent value="overview" className="mt-6">
@@ -197,11 +199,16 @@ export default function SeedDetailDialog({ seed, open, onOpenChange }: SeedDetai
                         <CardHeader className="pb-1">
                           <CardTitle className="flex items-center gap-2 text-lg">
                             {getSproutIcon(sprout.sprout_type)}
-                            {sprout.sprout_type.toUpperCase()}
+                            {`스택${index + 1}`}
                           </CardTitle>
                         </CardHeader>
                         <CardContent>
-                          <p className="line-clamp-3 text-sm">{sprout.content.summary}</p>
+                          <p className="line-clamp-3 text-sm font-medium">
+                            {sprout.content.stack_name}
+                          </p>
+                          <p className="mt-1 line-clamp-2 text-xs text-gray-600">
+                            {sprout.content.description}
+                          </p>
                           <p className="text-muted-foreground mt-2 text-xs">클릭하여 자세히 보기</p>
                         </CardContent>
                       </Card>
@@ -210,7 +217,7 @@ export default function SeedDetailDialog({ seed, open, onOpenChange }: SeedDetai
                 </div>
               </TabsContent>
 
-              {["what", "how", "why"].map((type) => {
+              {["stack1", "stack2", "stack3"].map((type) => {
                 const sprout = seed.sprouts?.find((s: Sprout) => s.sprout_type === type);
                 return (
                   <TabsContent key={type} value={type} className="mt-6">
@@ -220,30 +227,22 @@ export default function SeedDetailDialog({ seed, open, onOpenChange }: SeedDetai
                           <CardHeader>
                             <CardTitle className="flex items-center gap-2 text-xl">
                               {getSproutIcon(type)}
-                              {type.toUpperCase()}
+                              {sprout.content.stack_name}
                             </CardTitle>
                             <CardDescription className="text-base">
-                              {sprout.content.summary}
+                              {sprout.content.description}
                             </CardDescription>
                           </CardHeader>
                           <CardContent className="space-y-4">
                             <div>
-                              <h4 className="mb-2 font-semibold">핵심 가치</h4>
-                              <p className="text-sm leading-relaxed">{sprout.content.core_value}</p>
-                            </div>
-
-                            <Separator />
-
-                            <div>
-                              <h4 className="mb-2 font-semibold">예시</h4>
-                              <ul className="space-y-2">
-                                {sprout.content.examples.map((example: string, idx: number) => (
-                                  <li key={idx} className="flex items-start gap-2 text-sm">
-                                    <span className="text-muted-foreground">•</span>
-                                    <span className="leading-relaxed">{example}</span>
-                                  </li>
+                              <h4 className="mb-2 font-semibold">기술 스택</h4>
+                              <div className="flex flex-wrap gap-2">
+                                {sprout.content.technologies.map((tech: string, idx: number) => (
+                                  <Badge key={idx} variant="secondary" className="text-xs">
+                                    {tech}
+                                  </Badge>
                                 ))}
-                              </ul>
+                              </div>
                             </div>
 
                             <Separator />
@@ -257,7 +256,7 @@ export default function SeedDetailDialog({ seed, open, onOpenChange }: SeedDetai
                     ) : (
                       <div className="py-8 text-center">
                         <p className="text-muted-foreground">
-                          아직 {type.toUpperCase()} Sprout이 생성되지 않았습니다.
+                          아직 기술스택 조합이 생성되지 않았습니다.
                         </p>
                       </div>
                     )}
@@ -268,8 +267,10 @@ export default function SeedDetailDialog({ seed, open, onOpenChange }: SeedDetai
           ) : (
             <div className="py-12 text-center">
               <Lightbulb className="mx-auto mb-4 h-12 w-12 text-gray-400" />
-              <h3 className="mb-2 text-lg font-medium text-gray-900">아직 Sprout이 없습니다</h3>
-              <p className="text-gray-500">AI가 아이디어를 확장하면 여기에 표시됩니다.</p>
+              <h3 className="mb-2 text-lg font-medium text-gray-900">
+                아직 기술스택 추천이 없습니다
+              </h3>
+              <p className="text-gray-500">AI가 기술스택 조합을 추천하면 여기에 표시됩니다.</p>
             </div>
           )}
         </div>
