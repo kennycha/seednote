@@ -13,39 +13,6 @@ export function safeArray(value: unknown): string[] {
   return [];
 }
 
-// 안전한 기술스택 파싱 헬퍼
-export function safeTechnologies(value: unknown): {
-  frontend?: string[];
-  backend?: string[];
-  database?: string[];
-  infrastructure?: string[];
-} {
-  if (!value) return {};
-
-  // 새 형식 (객체)
-  if (typeof value === "object" && !Array.isArray(value)) {
-    const tech = value as {
-      frontend?: unknown[];
-      backend?: unknown[];
-      database?: unknown[];
-      infrastructure?: unknown[];
-    };
-    return {
-      frontend: safeArray(tech.frontend),
-      backend: safeArray(tech.backend),
-      database: safeArray(tech.database),
-      infrastructure: safeArray(tech.infrastructure),
-    };
-  }
-
-  // 기존 형식 (배열)
-  if (Array.isArray(value)) {
-    return { frontend: value };
-  }
-
-  return {};
-}
-
 export function convertRowSeedToSeed(row: RawSeed): Seed {
   const sprouts: Sprout[] = (["stack1", "stack2", "stack3"] as const).map((type) => ({
     seed_id: row.id,

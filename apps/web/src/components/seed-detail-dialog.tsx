@@ -22,7 +22,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import type { Seed, Sprout } from "@/types";
-import { safeArray, safeTechnologies } from "@/lib/utils";
+import { safeArray } from "@/lib/utils";
 
 interface SeedDetailDialogProps {
   seed: Seed | null;
@@ -239,11 +239,13 @@ export default function SeedDetailDialog({ seed, open, onOpenChange }: SeedDetai
                             <div>
                               <h4 className="mb-2 font-semibold">기술 스택</h4>
                               <div className="flex flex-wrap gap-1">
-                                {safeArray(sprout.content.technologies).map((tech: string, idx: number) => (
-                                  <Badge key={idx} variant="outline" className="text-xs">
-                                    {tech}
-                                  </Badge>
-                                ))}
+                                {safeArray(sprout.content.technologies).map(
+                                  (tech: string, idx: number) => (
+                                    <Badge key={idx} variant="outline" className="text-xs">
+                                      {tech}
+                                    </Badge>
+                                  )
+                                )}
                               </div>
                             </div>
 
@@ -255,12 +257,14 @@ export default function SeedDetailDialog({ seed, open, onOpenChange }: SeedDetai
                                 <div>
                                   <h4 className="mb-2 font-semibold text-green-700">장점</h4>
                                   <ul className="space-y-1">
-                                    {safeArray(sprout.content.pros).map((pro: string, idx: number) => (
-                                      <li key={idx} className="flex items-start gap-2 text-sm">
-                                        <span className="text-green-500">✓</span>
-                                        <span>{pro}</span>
-                                      </li>
-                                    ))}
+                                    {safeArray(sprout.content.pros).map(
+                                      (pro: string, idx: number) => (
+                                        <li key={idx} className="flex items-start gap-2 text-sm">
+                                          <span className="text-green-500">✓</span>
+                                          <span>{pro}</span>
+                                        </li>
+                                      )
+                                    )}
                                   </ul>
                                 </div>
                                 <Separator />
@@ -273,12 +277,14 @@ export default function SeedDetailDialog({ seed, open, onOpenChange }: SeedDetai
                                 <div>
                                   <h4 className="mb-2 font-semibold text-red-700">고려사항</h4>
                                   <ul className="space-y-1">
-                                    {safeArray(sprout.content.cons).map((con: string, idx: number) => (
-                                      <li key={idx} className="flex items-start gap-2 text-sm">
-                                        <span className="text-red-500">!</span>
-                                        <span>{con}</span>
-                                      </li>
-                                    ))}
+                                    {safeArray(sprout.content.cons).map(
+                                      (con: string, idx: number) => (
+                                        <li key={idx} className="flex items-start gap-2 text-sm">
+                                          <span className="text-red-500">!</span>
+                                          <span>{con}</span>
+                                        </li>
+                                      )
+                                    )}
                                   </ul>
                                 </div>
                                 <Separator />
@@ -288,12 +294,20 @@ export default function SeedDetailDialog({ seed, open, onOpenChange }: SeedDetai
                             {/* 학습 난이도 */}
                             <div>
                               <p className="mb-2 font-medium text-gray-600">학습 난이도</p>
-                              <Badge variant={
-                                sprout.content.learning_curve === 'Easy' ? 'default' :
-                                sprout.content.learning_curve === 'Medium' ? 'secondary' : 'destructive'
-                              }>
-                                {sprout.content.learning_curve === 'Easy' ? '초급' :
-                                 sprout.content.learning_curve === 'Medium' ? '중급' : '고급'}
+                              <Badge
+                                variant={
+                                  sprout.content.learning_curve === "Easy"
+                                    ? "default"
+                                    : sprout.content.learning_curve === "Medium"
+                                      ? "secondary"
+                                      : "destructive"
+                                }
+                              >
+                                {sprout.content.learning_curve === "Easy"
+                                  ? "초급"
+                                  : sprout.content.learning_curve === "Medium"
+                                    ? "중급"
+                                    : "고급"}
                               </Badge>
                             </div>
 
