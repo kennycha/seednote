@@ -10,7 +10,17 @@ export function convertRowSeedToSeed(row: RawSeed): Seed {
   const sprouts: Sprout[] = (["stack1", "stack2", "stack3"] as const).map((type) => ({
     seed_id: row.id,
     sprout_type: type,
-    content: row.sprouts?.[type] ?? { stack_name: "", description: "", technologies: [] },
+    content: row.sprouts?.[type] ?? { 
+      stack_name: "", 
+      description: "", 
+      technologies: {},
+      pros: [],
+      cons: [],
+      learning_curve: "Medium" as const,
+      estimated_dev_time: "",
+      best_for: [],
+      example_projects: []
+    },
     meta: {
       created_at: row.created_at,
       agent: "ollama:llama3:8b", // 또는 실제 모델명

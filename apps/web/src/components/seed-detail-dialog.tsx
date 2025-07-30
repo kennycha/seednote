@@ -234,15 +234,109 @@ export default function SeedDetailDialog({ seed, open, onOpenChange }: SeedDetai
                             </CardDescription>
                           </CardHeader>
                           <CardContent className="space-y-4">
+                            {/* 기술 스택 */}
                             <div>
-                              <h4 className="mb-2 font-semibold">기술 스택</h4>
-                              <div className="flex flex-wrap gap-2">
-                                {sprout.content.technologies.map((tech: string, idx: number) => (
+                              <h4 className="mb-3 font-semibold">기술 스택</h4>
+                              <div className="space-y-3">
+                                {Object.entries(sprout.content.technologies).map(([category, techs]) => (
+                                  techs && techs.length > 0 && (
+                                    <div key={category}>
+                                      <p className="mb-1 text-sm font-medium capitalize text-gray-600">
+                                        {category === 'frontend' ? '프론트엔드' : 
+                                         category === 'backend' ? '백엔드' :
+                                         category === 'database' ? '데이터베이스' :
+                                         category === 'infrastructure' ? '인프라' : category}
+                                      </p>
+                                      <div className="flex flex-wrap gap-1">
+                                        {techs.map((tech: string, idx: number) => (
+                                          <Badge key={idx} variant="outline" className="text-xs">
+                                            {tech}
+                                          </Badge>
+                                        ))}
+                                      </div>
+                                    </div>
+                                  )
+                                ))}
+                              </div>
+                            </div>
+
+                            <Separator />
+
+                            {/* 장점 */}
+                            <div>
+                              <h4 className="mb-2 font-semibold text-green-700">장점</h4>
+                              <ul className="space-y-1">
+                                {sprout.content.pros.map((pro: string, idx: number) => (
+                                  <li key={idx} className="flex items-start gap-2 text-sm">
+                                    <span className="text-green-500">✓</span>
+                                    <span>{pro}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+
+                            <Separator />
+
+                            {/* 단점 */}
+                            <div>
+                              <h4 className="mb-2 font-semibold text-red-700">고려사항</h4>
+                              <ul className="space-y-1">
+                                {sprout.content.cons.map((con: string, idx: number) => (
+                                  <li key={idx} className="flex items-start gap-2 text-sm">
+                                    <span className="text-red-500">!</span>
+                                    <span>{con}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+
+                            <Separator />
+
+                            {/* 메타 정보 */}
+                            <div className="grid grid-cols-2 gap-4 text-sm">
+                              <div>
+                                <p className="font-medium text-gray-600">학습 난이도</p>
+                                <Badge variant={
+                                  sprout.content.learning_curve === 'Easy' ? 'default' :
+                                  sprout.content.learning_curve === 'Medium' ? 'secondary' : 'destructive'
+                                } className="mt-1">
+                                  {sprout.content.learning_curve === 'Easy' ? '초급' :
+                                   sprout.content.learning_curve === 'Medium' ? '중급' : '고급'}
+                                </Badge>
+                              </div>
+                              <div>
+                                <p className="font-medium text-gray-600">개발 시간</p>
+                                <p className="mt-1 text-xs text-gray-500">{sprout.content.estimated_dev_time}</p>
+                              </div>
+                            </div>
+
+                            <Separator />
+
+                            {/* 적합한 용도 */}
+                            <div>
+                              <h4 className="mb-2 font-semibold">적합한 용도</h4>
+                              <div className="flex flex-wrap gap-1">
+                                {sprout.content.best_for.map((use: string, idx: number) => (
                                   <Badge key={idx} variant="secondary" className="text-xs">
-                                    {tech}
+                                    {use}
                                   </Badge>
                                 ))}
                               </div>
+                            </div>
+
+                            <Separator />
+
+                            {/* 예시 프로젝트 */}
+                            <div>
+                              <h4 className="mb-2 font-semibold">예시 프로젝트</h4>
+                              <ul className="space-y-1">
+                                {sprout.content.example_projects.map((project: string, idx: number) => (
+                                  <li key={idx} className="flex items-start gap-2 text-sm">
+                                    <span className="text-gray-400">•</span>
+                                    <span>{project}</span>
+                                  </li>
+                                ))}
+                              </ul>
                             </div>
 
                             <Separator />
