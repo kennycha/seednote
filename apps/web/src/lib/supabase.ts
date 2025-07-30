@@ -91,6 +91,22 @@ export const seedsApi = {
     if (error) throw error;
     return convertRowSeedToSeed(data);
   },
+
+  // seed 재처리 요청 (sprout 제거 및 status를 pending으로 변경)
+  retry: async (id: string): Promise<Seed> => {
+    const { data, error } = await supabase
+      .from("seeds")
+      .update({ 
+        status: "pending", 
+        sprouts: null 
+      })
+      .eq("id", id)
+      .select<"*", RawSeed>("*")
+      .single();
+
+    if (error) throw error;
+    return convertRowSeedToSeed(data);
+  },
 };
 
 // 인증 관련 함수들

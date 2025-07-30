@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
-import { Plus, Clock, CheckCircle, AlertCircle, LogOut, Eye, EyeOff, Pin } from "lucide-react";
+import { Plus, Clock, CheckCircle, AlertCircle, LogOut, Eye, EyeOff, Pin, RotateCcw } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -66,6 +66,13 @@ export default function HomePage() {
   const togglePinnedMutation = useMutation({
     mutationFn: ({ id, currentPinnedState }: { id: string; currentPinnedState: boolean }) =>
       seedsApi.togglePinned(id, currentPinnedState),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["seeds"] });
+    },
+  });
+
+  const retryMutation = useMutation({
+    mutationFn: (id: string) => seedsApi.retry(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["seeds"] });
     },
@@ -274,7 +281,7 @@ export default function HomePage() {
               transition={{ duration: 0.3 }}
             >
               <Card
-                className={`h-full cursor-pointer transition-shadow hover:shadow-md ${
+                className={`relative h-full cursor-pointer transition-shadow hover:shadow-md ${
                   seed.is_hidden ? "border-dashed opacity-60" : ""
                 } ${seed.is_pinned ? "bg-blue-50/30 ring-2 ring-blue-200" : ""}`}
                 onClick={() => setSelectedSeed(seed)}
@@ -353,6 +360,19 @@ export default function HomePage() {
                   <p className="text-muted-foreground mt-4 text-xs">
                     {new Date(seed.created_at).toLocaleDateString("ko-KR")}
                   </p>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      retryMutation.mutate(seed.id);
+                    }}
+                    className="absolute bottom-2 right-2 h-6 w-6 p-0 text-gray-400 hover:text-orange-600"
+                    disabled={retryMutation.isPending || seed.status === "processing"}
+                    title="기술스택 추천 다시 받기"
+                  >
+                    <RotateCcw className="h-3 w-3" />
+                  </Button>
                 </CardContent>
               </Card>
             </motion.div>
