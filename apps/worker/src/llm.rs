@@ -69,11 +69,19 @@ Respond in this exact JSON format:
         .json(&body)
         .send()
         .await?
+        .error_for_status()?
         .json()
         .await?;
 
-    let content = res["choices"][0]["message"]["content"].clone();
-    let parsed: Value = serde_json::from_str(content.as_str().unwrap_or(""))?;
+    let content = res
+        .get("choices")
+        .and_then(|choices| choices.get(0))
+        .and_then(|choice| choice.get("message"))
+        .and_then(|message| message.get("content"))
+        .and_then(|content| content.as_str())
+        .ok_or_else(|| anyhow::anyhow!("Invalid LLM response structure"))?;
+
+    let parsed: Value = serde_json::from_str(content)?;
 
     Ok(parsed)
 }

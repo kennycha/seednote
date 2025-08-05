@@ -34,7 +34,8 @@ pub async fn update_seed(
         .header("Prefer", "return=minimal")
         .json(body)
         .send()
-        .await?;
+        .await?
+        .error_for_status()?;
 
     Ok(())
 }
