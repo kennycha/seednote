@@ -362,8 +362,8 @@ export default function HomePage() {
                         {seed.sprouts.moscow_requirements.must_have
                           .slice(0, 3)
                           .map((feature: string, index: number) => (
-                            <Badge key={index} variant="outline">
-                              {feature}
+                            <Badge key={index} variant="outline" className="text-xs">
+                              {feature.length > 23 ? feature.substring(0, 23) + "..." : feature}
                             </Badge>
                           ))}
                         {seed.sprouts.moscow_requirements.must_have.length > 3 && (
