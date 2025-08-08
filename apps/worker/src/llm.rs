@@ -11,45 +11,38 @@ pub async fn generate_sprouts(
 ) -> anyhow::Result<Value> {
     let prompt = format!(
         r#"
-You are a technical advisor that recommends 3 different technology stacks for a given project idea.
+당신은 주어진 프로젝트 아이디어에 대해 MoSCoW 요구사항 분석과 3가지 기술 스택을 추천하는 기술 어드바이저입니다.
 
-PRIORITY ORDER:
-1. Most popular/mainstream stack for this project type
-2. TypeScript-based alternative
-3. Python or Rust alternative
+입력된 프로젝트 아이디어:
+- 제목: {title}
+- 추가 정보: {context:?}
 
-Input project idea:
-- Title: {title}
-- Context: {context:?}
+먼저 이 프로젝트에 대한 MoSCoW 요구사항 분석을 수행하고, 그 다음 3가지 기술 스택을 추천해주세요.
 
-Analyze the project and provide 3 different practical technology stack recommendations.
+기술 스택 우선순위:
+1. 이 프로젝트 유형에 가장 인기 있고 주류인 스택
+2. TypeScript 기반 대안
+3. Python 또는 Rust 대안
 
-Respond in this exact JSON format:
+다음 JSON 형식으로 정확히 응답해주세요:
 {{
-    "stack1": {{
-        "stack_name": "...",
-        "description": "...",
-        "technologies": ["...", "...", "..."],
-        "pros": ["...", "...", "..."],
-        "cons": ["...", "...", "..."],
-        "learning_curve": "Easy|Medium|Hard"
+    "moscow_requirements": {{
+        "must_have": [필수 기능들을 문자열 배열로],
+        "should_have": [중요 기능들을 문자열 배열로],
+        "could_have": [선택 기능들을 문자열 배열로],
+        "wont_have": [제외할 기능들을 문자열 배열로]
     }},
-    "stack2": {{
-        "stack_name": "...",
-        "description": "...",
-        "technologies": ["...", "...", "..."],
-        "pros": ["...", "...", "..."],
-        "cons": ["...", "...", "..."],
-        "learning_curve": "Easy|Medium|Hard"
-    }},
-    "stack3": {{
-        "stack_name": "...",
-        "description": "...",
-        "technologies": ["...", "...", "..."],
-        "pros": ["...", "...", "..."],
-        "cons": ["...", "...", "..."],
-        "learning_curve": "Easy|Medium|Hard"
-    }}
+    "stack_recommendations": [
+        {{
+            "stack_name": "첫 번째 스택 이름",
+            "description": "스택에 대한 설명",
+            "technologies": ["사용할 기술들"],
+            "pros": ["장점들"],
+            "cons": ["단점들"],
+            "learning_curve": "Easy|Medium|Hard 중 하나"
+        }},
+        두 번째와 세 번째 스택도 같은 형식으로
+    ]
 }}
 "#
     );

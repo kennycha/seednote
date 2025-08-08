@@ -1,7 +1,17 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
-import { Plus, Clock, CheckCircle, AlertCircle, LogOut, Eye, EyeOff, Pin, RotateCcw } from "lucide-react";
+import {
+  Plus,
+  Clock,
+  CheckCircle,
+  AlertCircle,
+  LogOut,
+  Eye,
+  EyeOff,
+  Pin,
+  RotateCcw,
+} from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -345,15 +355,25 @@ export default function HomePage() {
                       </p>
                     </div>
                   )}
-                  {seed.sprouts && seed.sprouts.length > 0 && (
+                  {seed.sprouts && seed.sprouts.moscow_requirements && (
                     <div className="space-y-2">
-                      <p className="text-sm font-medium">Sprouts:</p>
-                      <div className="flex gap-1">
-                        {seed.sprouts.map((_, index: number) => (
-                          <Badge key={index} variant="outline" className="text-xs">
-                            {`스택${index + 1}`}
+                      <p className="text-sm font-medium">필수 기능:</p>
+                      <div className="flex flex-wrap gap-1">
+                        {seed.sprouts.moscow_requirements.must_have
+                          .slice(0, 3)
+                          .map((feature: string, index: number) => (
+                            <Badge key={index} variant="outline">
+                              {feature}
+                            </Badge>
+                          ))}
+                        {seed.sprouts.moscow_requirements.must_have.length > 3 && (
+                          <Badge
+                            variant="outline"
+                            className="border-gray-200 bg-gray-50 text-xs text-gray-500"
+                          >
+                            +{seed.sprouts.moscow_requirements.must_have.length - 3}
                           </Badge>
-                        ))}
+                        )}
                       </div>
                     </div>
                   )}
@@ -367,8 +387,8 @@ export default function HomePage() {
                       e.stopPropagation();
                       retryMutation.mutate(seed.id);
                     }}
-                    className="absolute bottom-2 right-2 h-6 w-6 p-0 text-gray-400 hover:text-orange-600"
-                    disabled={retryMutation.isPending || seed.status === "processing"}
+                    className="absolute right-2 bottom-2 h-6 w-6 p-0 text-gray-400 hover:text-orange-600"
+                    disabled={retryMutation.isPending}
                     title="기술스택 추천 다시 받기"
                   >
                     <RotateCcw className="h-3 w-3" />

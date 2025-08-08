@@ -8,9 +8,13 @@ export interface RawSeed {
   title: string;
   context: string;
   sprouts: {
-    stack1: SproutContent | null;
-    stack2: SproutContent | null;
-    stack3: SproutContent | null;
+    moscow_requirements: {
+      must_have: string[];
+      should_have: string[];
+      could_have: string[];
+      wont_have: string[];
+    };
+    stack_recommendations: [StackRecommendation, StackRecommendation, StackRecommendation];
   };
   status: SeedStatus;
   created_at: string;
@@ -18,7 +22,7 @@ export interface RawSeed {
   is_pinned: boolean;
 }
 
-export interface SproutContent {
+export interface StackRecommendation {
   stack_name: string;
   description: string;
   technologies: string[];
@@ -32,41 +36,25 @@ export interface Seed {
   id: string;
   title: string;
   context: string | null;
-  sprouts: Sprout[] | null;
+  sprouts: {
+    moscow_requirements: {
+      must_have: string[];
+      should_have: string[];
+      could_have: string[];
+      wont_have: string[];
+    };
+    stack_recommendations: StackRecommendation[];
+  } | null;
   status: SeedStatus;
   created_at: string;
   is_hidden: boolean;
   is_pinned: boolean;
 }
 
-// SproutJSON v1.0 스키마
-export interface Sprout {
-  seed_id: string;
-  sprout_type: SproutType;
-  content: {
-    stack_name: string;
-    description: string;
-    technologies: string[];
-    pros: string[];
-    cons: string[];
-    learning_curve: "Easy" | "Medium" | "Hard";
-  };
-  meta: {
-    created_at: string;
-  };
-}
-
 // 새 Seed 생성 시 사용하는 타입
 export interface CreateSeedInput {
   title: string;
   context?: string;
-}
-
-// Supabase Realtime 이벤트 타입
-export interface RealtimeSeedUpdate {
-  new: Seed;
-  old: Seed | null;
-  eventType: "INSERT" | "UPDATE" | "DELETE";
 }
 
 // 인증 관련 타입

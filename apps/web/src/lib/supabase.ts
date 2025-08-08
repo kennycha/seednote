@@ -40,7 +40,7 @@ export const seedsApi = {
       .from("seeds")
       .insert({
         title: seed.title,
-        context: seed.context || null,
+        context: seed.context ?? null,
         status: "pending",
         sprouts: null,
         is_hidden: false,
@@ -96,9 +96,9 @@ export const seedsApi = {
   retry: async (id: string): Promise<Seed> => {
     const { data, error } = await supabase
       .from("seeds")
-      .update({ 
-        status: "pending", 
-        sprouts: null 
+      .update({
+        status: "pending",
+        sprouts: null,
       })
       .eq("id", id)
       .select<"*", RawSeed>("*")

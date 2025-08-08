@@ -1,4 +1,4 @@
-import type { RawSeed, Seed, Sprout } from "@/types";
+import type { RawSeed, Seed } from "@/types";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -14,29 +14,16 @@ export function safeArray(value: unknown): string[] {
 }
 
 export function convertRowSeedToSeed(row: RawSeed): Seed {
-  const sprouts: Sprout[] = (["stack1", "stack2", "stack3"] as const).map((type) => ({
-    seed_id: row.id,
-    sprout_type: type,
-    content: row.sprouts?.[type] ?? {
-      stack_name: "",
-      description: "",
-      technologies: [],
-      pros: [],
-      cons: [],
-      learning_curve: "Medium" as const,
-    },
-    meta: {
-      created_at: row.created_at,
-      agent: "ollama:llama3:8b", // 또는 실제 모델명
-      tokens_used: 0, // 현재 없으면 0으로 설정
-    },
-  }));
-
   return {
     id: row.id,
     title: row.title,
     context: row.context,
-    sprouts,
+    sprouts: row.sprouts
+      ? {
+          moscow_requirements: row.sprouts.moscow_requirements,
+          stack_recommendations: row.sprouts.stack_recommendations,
+        }
+      : null,
     status: row.status,
     created_at: row.created_at,
     is_hidden: row.is_hidden,
